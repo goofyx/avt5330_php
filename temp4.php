@@ -1,18 +1,34 @@
 <?php
-include "PHPcom/PHPcom.php";
+	
+  if (empty($argv[1])) die("Brak nazwy urządzenia\n");
 
-$com = new PHPcom( "/dev/serial/by-id/usb-FTDI_usb_temp_1_USBTEMP1-if00-port0", 19200, 8, 1 );
-$com->Setup( );
+  $lista_urzadzen = glob("/dev/serial/by-id/*".$argv[1]."*");	
+  $ilosc_urzadzen = count($lista_urzadzen);
+  echo "Ilość zgodnych urządzeń: ".$ilosc_urzadzen."\n";
+  
+  if ($ilosc_urzadzen == 0) die("Brak podpiętych urządzeń\n");
+  $karta_temp = "";
+  
+  foreach ($lista_urzadzen as $urzadzenie){	  
+		$karta_temp = $urzadzenie;
+	    continue;
+  }
+  
+  include "PHPcom/PHPcom.php";
 
-$com->Open( );
 
-while(1){
+  $com = new PHPcom( $karta_temp, 19200, 8, 1 );
+  $com->Setup( );
+
+  $com->Open( );
+
+  while(1){
 	$temp = $com->read(200,"\n");
 	if ($temp <> ""){
 		echo( $temp."\n" );
 	}
-}
+  }
 
 
-$com->Close( );
+  $com->Close( );
 ?>
