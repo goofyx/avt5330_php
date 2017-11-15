@@ -1,7 +1,7 @@
 <?php
 	
   if (empty($argv[1])) die("Brak nazwy urządzenia\n");
-
+  
   $lista_urzadzen = glob("/dev/serial/by-id/*".$argv[1]."*");	
   $ilosc_urzadzen = count($lista_urzadzen);
   echo "Ilość zgodnych urządzeń: ".$ilosc_urzadzen."\n";
@@ -14,9 +14,9 @@
 	    continue;
   }
   
-  include "PHPcom/PHPcom.php";
+  include "./include/PHPcom.php";
 
-
+  
   $com = new PHPcom( $karta_temp, 19200, 8, 1 );
   $com->Setup( );
 
